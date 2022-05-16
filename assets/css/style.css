@@ -51,6 +51,9 @@ hr {
 
   width: 100%;
   height: 100vh;
+  min-height: 650px;
+  position: relative;
+
   background: url("../images/intro.jpg") center no-repeat;
   background-size: cover;
 }
@@ -99,7 +102,25 @@ hr {
   top:0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 100;
+}
+
+.header.fixed {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #eb8b8d;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  transform: translate3d(0, 0, 0);
+}
+
+.header.active {
+  background-color: #eb8b8d;
 }
 
 .header__inner {
@@ -164,6 +185,83 @@ hr {
   color: #fce38a;
 }
 
+/* Nav-toggle */
+.nav-toggle {
+  width: 30px;
+  padding: 10px 0;
+  display: none;
+
+  font-size: 0;
+  color: transparent;
+
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 1;
+}
+
+.nav-toggle:focus {
+  outline: 0;
+}
+
+.nav-toggle__item {
+  display: block;
+  width: 100%;
+  height: 3px;
+
+  background-color: #fff;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto; 
+
+  transition: background .2s linear;
+}
+
+.nav-toggle.active .nav-toggle__item{
+  background: none;
+}
+
+.nav-toggle.active .nav-toggle__item::before{
+  transform-origin: left top;
+  transform: rotate(45deg) translateY(-4px);
+}
+
+.nav-toggle.active .nav-toggle__item::after{
+  transform-origin: left bottom;
+  transform: rotate(-45deg) translateY(2px);
+}
+
+.nav-toggle__item::before,
+.nav-toggle__item::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+
+  background-color: #fff;
+
+  position: absolute;
+  left: 0;
+  z-index: 1;
+
+  transition: transform .2s linear;
+}
+
+.nav-toggle__item::before {
+ top: -8px;
+}
+
+.nav-toggle__item::after {
+  bottom: -8px;
+}
 
 /* Button */
 
@@ -546,7 +644,7 @@ hr {
   position: relative; 
   
   border-bottom: 1px solid transparent;
-  cursor: pointer;
+  cursor: pointer;  
 }
 
 
@@ -564,8 +662,8 @@ hr {
   right: 20px;
   z-index: 1;
 
-  transform: translateY(-50%) rotate(135deg);
-  
+  transition: transform .1s linear;
+  transform: translateY(-50%) rotate(135deg);  
 }
 
 .accordion__icon {
@@ -622,8 +720,12 @@ hr {
 /* Reviews */
 
 .reviews {
-  padding: 0 110px;
+  /* padding: 0 110px; */
   position: relative;
+}
+
+.reviews .slick-slider {
+  padding: 0 110px;
 }
 
 .reviews--circle {
@@ -631,6 +733,7 @@ hr {
 }
 
 .reviews__item {
+  min-height: 210px;
   padding-left: 280px;
   position: relative;
 }
@@ -685,16 +788,25 @@ hr {
   background-color: #f38181;
 }
 
-.reviews__btn {
+.slick-arrow {
   font-size: 0;
   color: transparent;
+
+  border: 0;
+  background: none;
+  cursor: pointer;
+
   position: absolute;
   top: 50%;
   z-index: 1;
   transform: translateY(-50%);
 }
 
-.reviews__btn::after {
+.slick-arrow:focus {
+  outline: 0;
+}
+
+.slick-arrow::after {
   content: "";
   display: block;
   width: 15px;
@@ -704,12 +816,12 @@ hr {
   border-right: 2px solid #ccc;  
 }
 
-.reviews__btn--prev {
+.slick-prev {
   left: 0;
   transform: rotate(-135deg);
 }
 
-.reviews__btn--next {
+.slick-next {
   right: 0;
   transform: rotate(45deg);
 }
@@ -793,7 +905,7 @@ hr {
 
 .works__img {
   display: block;
-  max-width: 100%;
+  min-width: 100%;
   height: auto;
   transition: opacity 0.2s linear;
 }
@@ -1302,7 +1414,7 @@ hr {
   }
 
    /* Reviews */
-  .reviews {
+   .reviews .slick-slider {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -1352,10 +1464,38 @@ hr {
 }
 
 @media (max-width: 770px) {
+  /* Header */
+  .header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 
   /* Nav */
   .nav {
+    width: 100%;
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #eb8b8d;
+  }
+
+  .nav.active {
+    display: block;
+  }
+
+  .nav__link {
+    display: block;
+    margin: 0;
+    padding: 8px 20px;
+  }
+
+  .nav__link::after {
+    top: 80%;
+  }
+
+  .nav-toggle {
+    display: block;
   }
 
   /* Slider */
@@ -1375,7 +1515,6 @@ hr {
   .section--devices {
     padding-bottom: 0;
   }
-
 
   /* Cards */
   .card {
@@ -1421,7 +1560,7 @@ hr {
   /* Reviews */
   .reviews__photo {
     position: static;
-    margin: 0 auto 20px;
+    margin: 20px auto;
   }
 
   .reviews__item{
@@ -1521,13 +1660,13 @@ hr {
   }
 
   /* Reviews */
-  .reviews {
+  .reviews .slick-slider {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .reviews__btn {
-    top: 18%;
+  .slick-arrow {
+    top: 25%;
   }
 
   /* Logos */
